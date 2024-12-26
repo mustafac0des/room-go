@@ -8,60 +8,13 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-
-            height: 100%;
-        }
-
-        #app {
-            height: 100%;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            height: 100vh;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            padding: 1rem; /* Adjust padding for sidebar */
-        }
-
-        /* Ensuring no margin or padding between the navbar and sidebar */
-        .navbar {
-            margin-bottom: 0; /* Remove any bottom margin */
-        }
-
-        .main-content {
-            padding: 1rem; /* Adjust padding for main content */
-        }
-
-        /* Flexbox to align sidebar and content */
-        .d-flex {
-            display: flex;
-        }
-
-        .col-md-2 {
-            flex: 0 0 16.6667%; /* Sidebar takes up 1/6th of the width */
-            max-width: 16.6667%;
-        }
-
-        .col-md-10 {
-            flex: 0 0 83.3333%; /* Content takes up the remaining space */
-            max-width: 83.3333%;
-        }
-    </style>
 </head>
-<body style="background-color: #9A616D;">
-    <div id="app">
+<body class="m-3" style="background-color: #9A616D;">
+    <div id="app" class="w-100">
         <div class="d-flex">
             @auth
-            <div class="sidebar bg-light text-dark fs-5 col-md-2 p-3" >
+            <div class="sidebar bg-light text-dark fs-5 col-md-2 p-3" style="position: absolute; top: 0; left: 0; height: 100%; overflow-y: auto;">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link text-dark border rounded-4 m-1" href="{{ url('/profile/manage') }}">Manage Profile</a>
@@ -79,8 +32,8 @@
             </div>
             @endauth
 
-            <div class="col-md-10 main-content">
-                <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" style="border-radius: 1rem;">
+            <div class="col-md-10 main-content mx-auto">
+                <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm rounded-4">
                     <div class="container">
                         <a class="navbar-brand" href="{{ url('/') }}">
                             {{ config('app.name', 'Laravel') }}
@@ -94,13 +47,13 @@
                                 @guest
                                     @if (Route::has('login'))
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            <a class="nav-link" href="{{ route('login') }}">{{ __('Sign In') }}</a>
                                         </li>
                                     @endif
 
                                     @if (Route::has('register'))
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Sign Up') }}</a>
                                         </li>
                                     @endif
                                 @else
