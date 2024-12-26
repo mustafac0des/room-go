@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -36,13 +37,13 @@ class RoomController extends Controller
         $user_id = Auth::id();
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('images'), $imageName);
+            $imageName = time() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('images', $imageName, 'public');
         } else {
-            $imageName = null;
+            $path = null;
         }
 
-        $room = Room::create([
+        Room::create([
             'host_id' => $user_id,
             'beds' => $validated['beds'],
             'washrooms' => $validated['washrooms'],
@@ -50,7 +51,7 @@ class RoomController extends Controller
             'address' => $validated['address'],
             'price' => $validated['price'],
             'amenities' => json_encode($validated['amenities'] ?? []),
-            'image' => $imageName,
+            'image' => $path,
         ]);
 
         return redirect('/')->with('status', 'Room added successfully!');
@@ -85,13 +86,24 @@ class RoomController extends Controller
             return redirect()->route('rooms.index')->with('error', 'You can only update your own rooms.');
         }
 
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('images', $imageName, 'public');
+
+            if ($room->image) {
+                Storage::disk('public')->delete('images/' . $room->image);
+            }
+
+            $room->image = $path;
+        }
+
         $room->update([
             'address' => $request->address,
             'beds' => $request->beds,
             'washrooms' => $request->washrooms,
             'guests' => $request->guests,
             'price' => $request->price,
-            'amenities' => json_encode($request->amenities), 
+            'amenities' => json_encode($request->amenities),
         ]);
 
         return redirect()->route('rooms.index')->with('status', 'Room updated successfully!');
@@ -140,20 +152,17 @@ class RoomController extends Controller
 
         Booking::create([
             'room_id' => $room->id,
-            'guest_id' => $user->id, 
-            'status' => 'pending', 
+            'guest_id' => $user->id,
+            'status' => 'pending',
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'price' => $price,
-            'guest_name' => $user->name, 
+            'guest_name' => $user->name,
             'guest_email' => $user->email,
-            'guest_phone' => $user->phone, 
-            'guest_picture' => $user->picture, 
+            'guest_phone' => $user->phone,
+            'guest_picture' => $user->picture,
         ]);
 
         return redirect()->route('rooms.view')->with('status', 'Your booking is now pending.');
     }
-
-
 }
-

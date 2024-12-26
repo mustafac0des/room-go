@@ -21,22 +21,27 @@
                                             Room #{{ $room->id }}
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Address:</strong> {{ $room->address }}</p>
-                                            <p><strong>Beds:</strong> {{ $room->beds }}</p>
-                                            <p><strong>Guests:</strong> {{ $room->guests }}</p>
-                                            <p><strong>Price:</strong> ${{ $room->price }}</p>
+                                            @if($room->image)
+                                                <img src="{{ asset('storage/images/' . $room->image) }}" class="img-fluid mb-3" alt="Room Image">
+                                            @else
+                                                <img src="https://via.placeholder.com/500" class="img-fluid mb-3" alt="No image available">
+                                            @endif
+                                            <p class="my-0"><strong>Address:</strong> {{ $room->address }}</p>
+                                            <p class="my-0"><strong>Beds:</strong> {{ $room->beds }}</p>
+                                            <p class="my-0"><strong>Guests:</strong> {{ $room->guests }}</p>
+                                            <p class="my-0"><strong>Price:</strong> ${{ $room->price }}</p>
                                             
                                             @if ($room->bookings->where('status', '!=', 'occupied')->isEmpty())
                                                 <form action="{{ route('rooms.delete', $room->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill">
+                                                    <button type="submit" class="mt-2 btn btn-danger btn-sm rounded-2">
                                                         Delete
                                                     </button>
                                                 </form>
                                             @endif
                                             
-                                            <a href="{{ route('rooms.edit', $room->id) }}" class="btn btn-primary btn-sm rounded-pill" style="background-color: #9A616D; border-color: #9A616D;">
+                                            <a href="{{ route('rooms.edit', $room->id) }}" class="btn btn-primary btn-sm rounded-2 mt-2" style="background-color: #9A616D; border-color: #9A616D;">
                                                 Edit
                                             </a>
                                         </div>

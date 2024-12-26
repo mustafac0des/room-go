@@ -17,6 +17,12 @@
                                     {{ $room->address }}
                                 </div>
                                 <div class="card-body" style="background-color: #f4f1f3;">
+                                    @if($room->image_path) 
+                                        <img src="{{ asset('storage/' . $room->image_path) }}" class="img-fluid mb-3" alt="Room Image" style="max-height: 200px; object-fit: cover;">
+                                    @else
+                                        <img src="https://via.placeholder.com/300x200" class="img-fluid mb-3" alt="Room Image" style="max-height: 200px; object-fit: cover;">
+                                    @endif
+
                                     <p class="m-0"><strong>Beds:</strong> {{ $room->beds }}</p>
                                     <p class="m-0"><strong>Washrooms:</strong> {{ $room->washrooms }}</p>
                                     <p class="m-0"><strong>Guests:</strong> {{ $room->guests }}</p>
@@ -40,3 +46,4 @@
     </div>
 </div>
 @endsection
+
