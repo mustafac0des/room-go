@@ -29,10 +29,18 @@ class RoomController extends Controller
             'address' => 'required|string|max:255',
             'price' => 'required|numeric',
             'amenities' => 'nullable|array',
-            'amenities.*' => 'nullable|string'
+            'amenities.*' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $user_id = Auth::id();
+
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();  
+            $request->image->move(public_path('images'), $imageName);
+        } else {
+            $imageName = null;
+        }
 
         $room = Room::create([
             'host_id' => $user_id,
@@ -42,6 +50,7 @@ class RoomController extends Controller
             'address' => $validated['address'],
             'price' => $validated['price'],
             'amenities' => json_encode($validated['amenities'] ?? []),
+            'image' => $imageName,
         ]);
 
         return redirect('/')->with('status', 'Room added successfully!');
@@ -60,7 +69,6 @@ class RoomController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the input
         $request->validate([
             'address' => 'required|string|max:255',
             'beds' => 'required|integer|min:1',
@@ -68,27 +76,24 @@ class RoomController extends Controller
             'guests' => 'required|integer|min:1',
             'price' => 'required|numeric|min:1',
             'amenities' => 'nullable|array',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Find the room and update it
         $room = Room::findOrFail($id);
 
-        // Optional: Ensure only the owner can update the room
         if ($room->host_id != auth()->id()) {
             return redirect()->route('rooms.index')->with('error', 'You can only update your own rooms.');
         }
 
-        // Update the room details
         $room->update([
             'address' => $request->address,
             'beds' => $request->beds,
             'washrooms' => $request->washrooms,
             'guests' => $request->guests,
             'price' => $request->price,
-            'amenities' => json_encode($request->amenities),  // If amenities are an array, store them as JSON
+            'amenities' => json_encode($request->amenities), 
         ]);
 
-        // Redirect with success message
         return redirect()->route('rooms.index')->with('status', 'Room updated successfully!');
     }
 
@@ -109,51 +114,46 @@ class RoomController extends Controller
 
     public function availableRooms()
     {
-        // Get all rooms that are not hosted by the currently authenticated user
         $rooms = Room::with('bookings')
-                    ->where('host_id', '!=', auth()->id()) // Exclude rooms hosted by the logged-in user
+                    ->where('host_id', '!=', auth()->id())
                     ->get();
 
         return view('rooms.view', compact('rooms'));
     }
 
-    // Method to handle the booking process
     public function book(Request $request, $roomId)
-{
-    $room = Room::findOrFail($roomId);
+    {
+        $room = Room::findOrFail($roomId);
 
-    // Validate incoming data
-    $request->validate([
-        'guest_name' => 'required|string|max:255',
-        'guest_email' => 'required|email|max:255',
-        'guest_phone' => 'required|string|max:15',
-        'start_date' => 'required|date|after_or_equal:today',
-        'end_date' => 'required|date|after:start_date',
-        'guests' => 'required|integer|min:1',
-    ]);
+        $request->validate([
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date',
+            'guests' => 'required|integer|min:1',
+        ]);
 
-    // Calculate the total price based on the number of days and price per night
-    $startDate = new \Carbon\Carbon($request->start_date);
-    $endDate = new \Carbon\Carbon($request->end_date);
-    $totalDays = $endDate->diffInDays($startDate);
-    $price = $totalDays * $room->price * $request->guests;
+        $user = Auth::user();
 
-    // Create a booking with status 'pending'
-    Booking::create([
-        'room_id' => $room->id,
-        'guest_id' => Auth::id(),
-        'status' => 'pending', // Set booking status to 'pending'
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'price' => $price,
-        'guest_name' => $request->guest_name,
-        'guest_email' => $request->guest_email,
-        'guest_phone' => $request->guest_phone,
-    ]);
+        $startDate = new \Carbon\Carbon($request->start_date);
+        $endDate = new \Carbon\Carbon($request->end_date);
+        $totalDays = $endDate->diffInDays($startDate);
+        $price = $totalDays * $room->price * $request->guests;
 
-    // Redirect with a success message
-    return redirect()->route('rooms.view')->with('status', 'Your booking is now pending.');
-}
+        Booking::create([
+            'room_id' => $room->id,
+            'guest_id' => $user->id, 
+            'status' => 'pending', 
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'price' => $price,
+            'guest_name' => $user->name, 
+            'guest_email' => $user->email,
+            'guest_phone' => $user->phone, 
+            'guest_picture' => $user->picture, 
+        ]);
+
+        return redirect()->route('rooms.view')->with('status', 'Your booking is now pending.');
+    }
+
 
 }
 
