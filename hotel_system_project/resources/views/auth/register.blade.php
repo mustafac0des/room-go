@@ -14,7 +14,7 @@
                         <div class="col-md-6 col-lg-7 d-flex p-4 align-items-center">
                             <div class="card-body p-1 p-lg-1 text-black">
 
-                                <form method="POST" action="{{ route('register') }}">
+                                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="d-flex align-items-center mb-1 pb-1">
@@ -108,9 +108,6 @@
         </div>
     </div>
 </section>
-
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
 <script>
     function togglePassword() {
         const passwordField = document.getElementById("password");

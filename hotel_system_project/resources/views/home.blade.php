@@ -20,4 +20,25 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script type="text/javascript">
+    @if(session('user'))
+        (function() {
+            emailjs.init('c61rEPe79cRAtAYXW');
+
+            emailjs.send('service_op8vezj', 'template_dwjf2oi', {
+                to_email: '{{ session('user')->email }}',
+                to_name: '{{ session('user')->name }}',
+                message: 'Your account has been successfully created.'
+            })
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+                console.log('FAILED...', error);
+            });
+        })();
+    @endif
+</script>
+
 @endsection

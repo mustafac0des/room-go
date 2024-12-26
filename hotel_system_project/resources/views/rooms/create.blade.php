@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5 rounded-5">
+<div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-sm">
@@ -10,10 +10,19 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('rooms.store') }}">
+                    <form method="POST" action="{{ route('rooms.store') }}" enctype="multipart/form-data">
                         @csrf
 
-                        <!-- Beds -->
+                        <div class="form-group mb-4 row">
+                            <label for="image" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Image') }}</label>
+                            <div class="col-md-6">
+                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group mb-4 row">
                             <label for="beds" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Beds') }}</label>
                             <div class="col-md-6">
@@ -28,7 +37,6 @@
                             </div>
                         </div>
 
-                        <!-- Washrooms -->
                         <div class="form-group mb-4 row">
                             <label for="washrooms" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Washrooms') }}</label>
                             <div class="col-md-6">
@@ -43,7 +51,6 @@
                             </div>
                         </div>
 
-                        <!-- Guests -->
                         <div class="form-group mb-4 row">
                             <label for="guests" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Guests') }}</label>
                             <div class="col-md-6">
@@ -54,7 +61,6 @@
                             </div>
                         </div>
 
-                        <!-- Address -->
                         <div class="form-group mb-4 row">
                             <label for="address" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Address') }}</label>
                             <div class="col-md-6">
@@ -65,7 +71,6 @@
                             </div>
                         </div>
 
-                        <!-- Price -->
                         <div class="form-group mb-4 row">
                             <label for="price" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Price') }}</label>
                             <div class="col-md-6">
@@ -76,7 +81,6 @@
                             </div>
                         </div>
 
-                        <!-- Amenities -->
                         <div class="form-group mb-4 row">
                             <label for="amenities" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Amenities') }}</label>
                             <div class="col-md-6">
@@ -89,7 +93,6 @@
                             </div>
                         </div>
 
-                        <!-- Submit Button -->
                         <div class="form-group mb-0 row">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary" style="background-color: #9A616D; border-color: #9A616D;">

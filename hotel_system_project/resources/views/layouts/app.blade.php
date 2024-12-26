@@ -13,25 +13,7 @@
 <body class="m-3" style="background-color: #9A616D;">
     <div id="app" class="w-100">
         <div class="d-flex">
-            @auth
-            <div class="sidebar bg-light text-dark fs-5 col-md-2 p-3" style="position: absolute; top: 0; left: 0; height: 100%; overflow-y: auto;">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark border rounded-4 m-1" href="{{ url('/profile/manage') }}">Manage Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark border rounded-4 m-1" href="{{ url('/rooms/create') }}">Host A Room</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark border rounded-4 m-1" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark border rounded-4 m-1" href="{{ url('/rooms/view') }}">Book A Room</a>
-                    </li>
-                </ul>
-            </div>
-            @endauth
-
+            
             <div class="col-md-10 main-content mx-auto">
                 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm rounded-4">
                     <div class="container">
@@ -79,11 +61,30 @@
                         </div>
                     </div>
                 </nav>
-
-                <main class="py-4">
-                    @yield('content')
-                </main>
-            </div>
+                <div class="d-flex">
+                    @auth
+                    <div class="sidebar text-dark fs-5 col-md-2 p-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/profile/manage') }}">Manage Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/create') }}">Host A Room</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/view') }}">Book A Room</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @endauth
+                    <main class="w-100 py-4">
+                        @yield('content')
+                    </main>
+                </div>
+                </div>
         </div>
     </div>
 </body>
