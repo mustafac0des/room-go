@@ -25,6 +25,7 @@ Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('rooms.edi
 Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update')->middleware('auth');
 Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.delete')->middleware('auth');
 Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('rooms.view')->middleware('auth');
-Route::put('/rooms/book/{id}', [RoomController::class, 'availableRooms'])->name('rooms.book')->middleware('auth');
+Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('rooms.book')->middleware('auth');
+
 
 

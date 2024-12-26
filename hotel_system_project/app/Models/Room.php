@@ -18,6 +18,7 @@ class Room extends Model
         'address',
         'price',
         'amenities',
+        'image',
     ];
 
     public function bookings()

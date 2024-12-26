@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Room; // If you want to reference the Room model in Booking
+use App\Models\Room; 
 
 class Booking extends Model
 {
@@ -24,11 +24,11 @@ class Booking extends Model
 
     public function room()
     {
-        return $this->belongsTo(Room::class); // A booking belongs to a room
+        return $this->belongsTo(Room::class);
     }
 
     public function guest()
     {
-        return $this->belongsTo(User::class, 'guest_id'); // A booking belongs to a user (guest)
+        return $this->belongsTo(User::class, 'guest_id');
     }
 }

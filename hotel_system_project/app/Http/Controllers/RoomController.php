@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-namespace App\Http\Controllers;
-
+use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,4 +116,44 @@ class RoomController extends Controller
 
         return view('rooms.view', compact('rooms'));
     }
+
+    // Method to handle the booking process
+    public function book(Request $request, $roomId)
+{
+    $room = Room::findOrFail($roomId);
+
+    // Validate incoming data
+    $request->validate([
+        'guest_name' => 'required|string|max:255',
+        'guest_email' => 'required|email|max:255',
+        'guest_phone' => 'required|string|max:15',
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after:start_date',
+        'guests' => 'required|integer|min:1',
+    ]);
+
+    // Calculate the total price based on the number of days and price per night
+    $startDate = new \Carbon\Carbon($request->start_date);
+    $endDate = new \Carbon\Carbon($request->end_date);
+    $totalDays = $endDate->diffInDays($startDate);
+    $price = $totalDays * $room->price * $request->guests;
+
+    // Create a booking with status 'pending'
+    Booking::create([
+        'room_id' => $room->id,
+        'guest_id' => Auth::id(),
+        'status' => 'pending', // Set booking status to 'pending'
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'price' => $price,
+        'guest_name' => $request->guest_name,
+        'guest_email' => $request->guest_email,
+        'guest_phone' => $request->guest_phone,
+    ]);
+
+    // Redirect with a success message
+    return redirect()->route('rooms.view')->with('status', 'Your booking is now pending.');
 }
+
+}
+

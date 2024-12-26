@@ -21,6 +21,7 @@ class ProfileController extends Controller
             'phone' => 'nullable|string',
             'address' => 'nullable|string',
             'gender' => 'nullable|string',
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
         
         $user = Auth::user();
