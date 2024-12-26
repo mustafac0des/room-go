@@ -7,7 +7,6 @@
             <div class="col col-xl-10">
                 <div class="card" style="border-radius: 1rem;">
                     <div class="row g-0 h-100">
-                        <!-- Image Section -->
                         <div class="col-md-6 col-lg-5 d-flex align-items-stretch">
                             <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
                                 alt="signup form" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1rem 0 0 1rem;" />
@@ -21,8 +20,7 @@
                                     <div class="d-flex align-items-center mb-1 pb-1">
                                         <i class="fas fa-user-plus fa-2x me-1" style="color: #ff6219;"></i>
                                         <span class="h1 fw-bold mb-0">Sign Up for RoomGO</span>
-</div>
-                                    <!-- Name -->
+                                    </div>
                                     <div class="form-outline mb-1">
                                         <input type="text" id="name" class="form-control form-control-lg @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus />
                                         <label class="form-label" for="name">Name</label>
@@ -32,8 +30,15 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Gender -->
+                                    <div class="form-outline mb-1">
+                                        <input type="file" id="picture" class="form-control form-control-lg @error('picture') is-invalid @enderror" name="picture" accept="image/*" />
+                                        <label class="form-label" for="picture">Profile Picture</label>
+                                        @error('picture')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                     <div class="form-outline mb-1">
                                         <select id="gender" class="form-control form-control-lg @error('gender') is-invalid @enderror" name="gender" required>
                                             <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
@@ -46,8 +51,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Address -->
                                     <div class="form-outline mb-1">
                                         <input type="text" id="address" class="form-control form-control-lg @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address" />
                                         <label class="form-label" for="address">Address</label>
@@ -57,8 +60,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Phone -->
                                     <div class="form-outline mb-1">
                                         <input type="text" id="phone" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" />
                                         <label class="form-label" for="phone">Phone</label>
@@ -68,8 +69,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Email Address -->
                                     <div class="form-outline mb-1">
                                         <input type="email" id="email" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" />
                                         <label class="form-label" for="email">Email Address</label>
@@ -79,8 +78,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Password -->
                                     <div class="form-outline mb-1">
                                         <input type="password" id="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" />
                                         <label class="form-label" for="password">Password</label>
@@ -91,20 +88,16 @@
                                         </span>
                                         @enderror
                                     </div>
-
-                                    <!-- Confirm Password -->
                                     <div class="form-outline mb-1">
                                         <input type="password" id="password-confirm" class="form-control form-control-lg" name="password_confirmation" required autocomplete="new-password" />
                                         <label class="form-label" for="password-confirm">Confirm Password</label>
                                         <i id="toggleConfirmPassword" class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-1" style="cursor: pointer;" onclick="toggleConfirmPassword()"></i>
                                     </div>
-
-                                    <!-- Signup Button -->
                                     <div class="pt-1 mb-1">
                                         <button type="submit" class="btn btn-dark btn-lg btn-block">Register</button>
                                     </div>
 
-                                    <p class="mb-1 pb-lg-1" style="color: #393f81;">Already have an account? <a href="{{ route('login') }}" style="color: #393f81;">Login here</a></p>
+                                    <p class="mb-1 pb-lg-1" style="color: #393f81;">Already have an account? <a href="{{ route('login') }}" style="color: #393f81;">Sign In</a></p>
                                 </form>
 
                             </div>

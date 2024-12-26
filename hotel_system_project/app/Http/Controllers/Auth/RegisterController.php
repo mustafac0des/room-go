@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
 class RegisterController extends Controller
 {
     use RegistersUsers;
@@ -28,6 +29,7 @@ class RegisterController extends Controller
             'phone' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ]);
     }
 
@@ -40,6 +42,7 @@ class RegisterController extends Controller
             'phone' => $data['phone'], 
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'picture' => $data['picture']->store('images', 'public'),   
         ]);
     }
 }
