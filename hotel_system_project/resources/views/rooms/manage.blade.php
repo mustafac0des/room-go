@@ -48,7 +48,7 @@
                                                 </p>
                                             </div>
                                             
-                                            @if ($room->bookings->where('status', '!=', 'occupied')->isEmpty())
+                                            @if ($room->bookings->where('status', '!=', 'occupied'))
                                                 <form action="{{ route('rooms.delete', $room->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     @method('DELETE')

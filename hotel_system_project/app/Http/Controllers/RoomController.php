@@ -36,7 +36,7 @@ class RoomController extends Controller
     $booking = Booking::findOrFail($bookingId);
 
     // Ensure the status is valid
-    $validStatuses = ['approved', 'rejected'];
+    $validStatuses = ['rejected', 'pending', 'occupied', 'completed'];
     if (!in_array($request->status, $validStatuses)) {
         return back()->with('error', 'Invalid status.');
     }

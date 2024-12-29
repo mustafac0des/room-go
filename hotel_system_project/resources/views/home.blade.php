@@ -13,13 +13,12 @@
                         <div class="card-body p-0">
                             <div class="card-header" style="color: #9A616D;">{{ __('Notifications') }}</div>
                             @if (session('status'))
-                                <div class="alert alert-success" role="alert">
+                                <div class="alert alert-success m-2" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
 
                             @foreach ($rooms as $room)
-                                
                                 <div class="d-flex align-items-center">
                                     <div style="margin-left: 20px;">
                                         <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
@@ -28,43 +27,45 @@
                                     <i class="fs-1 m-2" style="color: #9A616D;">{{ $room->address }}</i>
                                     <i>ID#{{$room->id}}</i>
                                 </div>
-                                @if ($room->bookings->isEmpty()) 
-                                    <p>No pending bookings for this room.</p>
-                                @else
-                                    <ul>
-                                        @foreach ($room->bookings as $booking)
-                                            @if ($booking->status != 'approved')
-                                                <li>
-                                                    <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
-                                                    <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
-                                                    {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
-                                                    <span class="badge bg-warning text-dark">${{ $booking->price }}</span>
-                                                    <span class="badge bg-danger">{{ $booking->status }}</span>
-                                                    @break
-                                                    <form action="{{ route('rooms.updateBookingStatus', $booking->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="pt-1 mb-4">
-                                                            <button type="submit" name="status" value="approved" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9A616D;">Accept</button>
-                                                        </div>
-                                                        <div class="pt-1 mb-4">
-                                                            <button type="submit" name="status" value="rejected" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9A616D;">Rejected</button>
-                                                        </div>
-                                                        <button type="submit" name="status" value="approved" class="btn btn-success">Accept</button>
-                                                        <button type="submit" name="status" value="rejected" class="btn btn-danger">Reject</button>
-                                                    </form>
-                                                </li>
-                                            @elseif ($booking->status == 'approved')
-                                                    <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
-                                                    <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
-                                                    {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
-                                                    <span class="badge bg-warning text-dark">${{ $booking->price }}</span>
-                                                    <span class="badge bg-danger">Occupied</span>
-                                                    @break
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                @endif
+
+                                <ul>
+                                    @foreach ($room->bookings as $booking)
+                                        @if ($booking->status == 'occupied')
+                                            <div>
+                                                <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
+                                                <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
+                                                {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
+                                                <span class="badge bg-warning text-dark">${{ $booking->price }}</span>
+                                                <span class="badge bg-danger">{{ $room->status }}</span>   
+                                                <br>      
+                                                <form action="{{ route('rooms.updateBookingStatus', $booking->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" name="status" value="completed" class="btn btn-sm btn-success">Mark As Complete</button>                       
+                                                </form>                      
+                                            </div>
+                                        @elseif ($booking->status == 'pending')
+                                            <div>
+                                                <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
+                                                <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
+                                                {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
+                                                <span class="badge bg-warning text-dark">${{ $booking->price }}</span>
+                                                <span class="badge bg-danger">{{ $booking->status }}</span>
+                                                <br>
+                                                <form action="{{ route('rooms.updateBookingStatus', $booking->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="pt-1 mb-4 btn-group shadow-sm">
+                                                        <button type="submit" name="status" value="occupied" class="btn text-light btn-sm" style="background-color: #9A616D;">Accept</button>
+                                                        <button type="submit" name="status" value="rejected" class="btn text-light bg-danger btn-sm">Reject</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <p class="px-3" style="color: #9A616D;">No pending bookings for this room.</p>
+                                        @endif
+                                    @endforeach
+                                </ul>
                             @endforeach
                         </div>
                     </div>

@@ -1,109 +1,105 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header" style="background-color: #F9F9F9;">
-                    <h4 class="fs-3">{{ __('Host A Room') }}</h4>
-                </div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('rooms.store') }}" enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="form-group mb-4 row">
-                            <label for="image" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Image') }}</label>
-                            <div class="col-md-6">
-                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
-                                @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+    <div class="container p-0 mt-5">
+        <div class="col col-xl-10 rounded-6 w-100">
+            <div class="card rounded-4">
+                <div class="row g-0">
+                    <div class="col-md-6 col-lg-5">
+                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                             alt="host room" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                    <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <form method="POST" action="{{ route('rooms.store') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="d-flex align-items-center pb-0 mb-3">
+                                    <span class="h1 fw-bold mb-0">Host A Room</span>
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <input type="file" id="image" style="color: #9A616D;" class="form-control form-control-md @error('image') is-invalid @enderror" name="image" />
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="image">Image</label>
+                                    @error('image')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <select id="beds" style="color: #9A616D;" class="form-control form-control-md @error('beds') is-invalid @enderror" name="beds" required>
+                                        <option value="1" {{ old('beds') == '1' ? 'selected' : '' }}>1</option>
+                                        <option value="2" {{ old('beds') == '2' ? 'selected' : '' }}>2</option>
+                                        <option value="3" {{ old('beds') == '3' ? 'selected' : '' }}>3</option>
+                                    </select>
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="beds">Beds</label>
+                                    @error('beds')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1" style="color: #9A616D;">
+                                    <select id="washrooms" class="form-control form-control-md @error('washrooms') is-invalid @enderror" name="washrooms" required>
+                                        <option value="1" {{ old('washrooms') == '1' ? 'selected' : '' }}>1</option>
+                                        <option value="2" {{ old('washrooms') == '2' ? 'selected' : '' }}>2</option>
+                                        <option value="3" {{ old('washrooms') == '3' ? 'selected' : '' }}>3</option>
+                                    </select>
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="washrooms">Washrooms</label>
+                                    @error('washrooms')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <input id="guests" type="number" class="form-control form-control-md @error('guests') is-invalid @enderror" name="guests" value="{{ old('guests') }}" required />
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="guests">Guests</label>
+                                    @error('guests')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <input id="address" type="text" style="color: #9A616D;" class="form-control form-control-md @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required />
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="address">Address</label>
+                                    @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <input id="price" type="number" step="0.01" class="form-control form-control-md @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" required />
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="price">Price</label>
+                                    @error('price')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <label for="amenities" class="form-label mt-2 mx-2" style="color: #9A616D;">Amenities</label>
+                                    @foreach (['Wi-Fi', 'Parking', 'Pool', 'Gym', 'Breakfast', 'Air Conditioning'] as $amenity)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity }}" {{ in_array($amenity, old('amenities', [])) ? 'checked' : '' }} />
+                                            <label class="form-check-label" for="{{ $amenity }}" style="color: #9A616D;">{{ $amenity }}</label>
+                                        </div>
+                                    @endforeach
+                                    @error('amenities')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="pt-1 mb-4">
+                                    <button type="submit" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9A616D;">Add Room</button>
+                                </div>
+                            </form>
                         </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="beds" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Beds') }}</label>
-                            <div class="col-md-6">
-                                <select id="beds" class="form-control @error('beds') is-invalid @enderror" name="beds" required>
-                                    <option value="1" {{ old('beds') == '1' ? 'selected' : '' }}>1</option>
-                                    <option value="2" {{ old('beds') == '2' ? 'selected' : '' }}>2</option>
-                                    <option value="3" {{ old('beds') == '3' ? 'selected' : '' }}>3</option>
-                                </select>
-                                @error('beds')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="washrooms" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Washrooms') }}</label>
-                            <div class="col-md-6">
-                                <select id="washrooms" class="form-control @error('washrooms') is-invalid @enderror" name="washrooms" required>
-                                    <option value="1" {{ old('washrooms') == '1' ? 'selected' : '' }}>1</option>
-                                    <option value="2" {{ old('washrooms') == '2' ? 'selected' : '' }}>2</option>
-                                    <option value="3" {{ old('washrooms') == '3' ? 'selected' : '' }}>3</option>
-                                </select>
-                                @error('washrooms')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="guests" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Guests') }}</label>
-                            <div class="col-md-6">
-                                <input id="guests" type="number" class="form-control @error('guests') is-invalid @enderror" name="guests" value="{{ old('guests') }}" required>
-                                @error('guests')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="address" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Address') }}</label>
-                            <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
-                                @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="price" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Price') }}</label>
-                            <div class="col-md-6">
-                                <input id="price" type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" required>
-                                @error('price')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-4 row">
-                            <label for="amenities" class="col-md-4 col-form-label text-md-right text-muted">{{ __('Amenities') }}</label>
-                            <div class="col-md-6">
-                                @foreach (['Wi-Fi', 'Parking', 'Pool', 'Gym', 'Breakfast', 'Air Conditioning'] as $amenity)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity }}" {{ in_array($amenity, old('amenities', [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="{{ $amenity }}">{{ $amenity }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-0 row">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" style="background-color: #9A616D; border-color: #9A616D;">
-                                    {{ __('Add Room') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
