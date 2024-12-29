@@ -3,6 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                            alt="login form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Your Room Bookings') }}</div>
@@ -59,11 +63,6 @@
                 to_email: '{{ session('user')->email }}',
                 to_name: '{{ session('user')->name }}',
                 message: 'Your account has been successfully created.'
-            })
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-                console.log('FAILED...', error);
             });
         })();
     @endif

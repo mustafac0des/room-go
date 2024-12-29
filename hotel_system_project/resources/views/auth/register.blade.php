@@ -1,140 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="vh-120" style="background-color: #9A616D;">
-    <div class="container py-1 h-100">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col col-xl-10">
-                <div class="card" style="border-radius: 1rem;">
-                    <div class="row g-0 h-100">
-                        <div class="col-md-6 col-lg-5 d-flex align-items-stretch">
-                            <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
-                                alt="signup form" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1rem 0 0 1rem;" />
-                        </div>
-                        <div class="col-md-6 col-lg-7 d-flex p-4 align-items-center">
-                            <div class="card-body p-1 p-lg-1 text-black">
-
-                                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                                    @csrf
-
-                                    <div class="d-flex align-items-center mb-1 pb-1">
-                                        <i class="fas fa-user-plus fa-2x me-1" style="color: #ff6219;"></i>
-                                        <span class="h1 fw-bold mb-0">Sign Up for RoomGO</span>
-                                    </div>
+    <div class="container p-0">
+        <div class="col col-xl-10 rounded-6 w-100">
+            <div class="card rounded-4">
+                <div class="row g-0">
+                    <div class="col-md-6 col-lg-5">
+                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                             alt="signup form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                    <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="d-flex align-items-center pb-0 mb-3">
+                                    <span class="h1 fw-bold mb-0">Sign Up for Room<i style="color: #9A616D;">GO</i></span>
+                                </div>
+                                @foreach (['name', 'picture', 'gender', 'address', 'phone', 'email', 'password', 'password_confirmation'] as $field)
                                     <div class="form-outline mb-1">
-                                        <input type="text" id="name" class="form-control form-control-lg @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus />
-                                        <label class="form-label" for="name">Name</label>
-                                        @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        @if ($field === 'gender')
+                                            <select id="gender" class="form-control form-control-md @error('gender') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="gender" required>
+                                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                            </select>
+                                        @elseif ($field === 'picture')
+                                            <input type="file" id="picture" class="form-control form-control-md @error('picture') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="picture" accept="image/*" />
+                                        @elseif (in_array($field, ['password', 'password_confirmation']))
+                                            <input type="password" id="{{ $field }}" class="form-control form-control-md @error($field) is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="{{ $field }}" required autocomplete="new-password" />
+                                            <i id="toggle{{ ucfirst($field) }}" class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-1" style="color: #9A616D; border: 1px solid #9A616D; cursor: pointer;"></i>
+                                        @else
+                                            <input type="{{ $field === 'email' ? 'email' : 'text' }}" id="{{ $field }}" class="form-control form-control-md @error($field) is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="{{ $field }}" value="{{ old($field) }}" required autocomplete="{{ $field }}" autofocus />
+                                        @endif
+                                        <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="{{ $field }}">
+                                            {{ ucfirst(str_replace('_', ' ', $field)) }}
+                                        </label>
+                                        @error($field)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                     </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="file" id="picture" class="form-control form-control-lg @error('picture') is-invalid @enderror" name="picture" accept="image/*" />
-                                        <label class="form-label" for="picture">Profile Picture</label>
-                                        @error('picture')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <select id="gender" class="form-control form-control-lg @error('gender') is-invalid @enderror" name="gender" required>
-                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                                        </select>
-                                        <label class="form-label" for="gender">Gender</label>
-                                        @error('gender')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="text" id="address" class="form-control form-control-lg @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address" />
-                                        <label class="form-label" for="address">Address</label>
-                                        @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="text" id="phone" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" />
-                                        <label class="form-label" for="phone">Phone</label>
-                                        @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="email" id="email" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" />
-                                        <label class="form-label" for="email">Email Address</label>
-                                        @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="password" id="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" />
-                                        <label class="form-label" for="password">Password</label>
-                                        <i id="togglePassword" class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-1" style="cursor: pointer;" onclick="togglePassword()"></i>
-                                        @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline mb-1">
-                                        <input type="password" id="password-confirm" class="form-control form-control-lg" name="password_confirmation" required autocomplete="new-password" />
-                                        <label class="form-label" for="password-confirm">Confirm Password</label>
-                                        <i id="toggleConfirmPassword" class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-1" style="cursor: pointer;" onclick="toggleConfirmPassword()"></i>
-                                    </div>
-                                    <div class="pt-1 mb-1">
-                                        <button type="submit" class="btn btn-dark btn-lg btn-block">Register</button>
-                                    </div>
-
-                                    <p class="mb-1 pb-lg-1" style="color: #393f81;">Already have an account? <a href="{{ route('login') }}" style="color: #393f81;">Sign In</a></p>
-                                </form>
-
-                            </div>
+                                @endforeach
+                                <div class="pt-1 mb-4">
+                                    <button type="submit" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9A616D;">Register</button>
+                                </div>
+                                <p class="mb-5 pb-lg-1 text-dark">Already have an account? <a href="{{ route('login') }}" style="color: #9A616D;">Sign In</a></p>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<script>
-    function togglePassword() {
-        const passwordField = document.getElementById("password");
-        const toggleIcon = document.getElementById("togglePassword");
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-        }
-    }
-
-    function toggleConfirmPassword() {
-        const confirmPasswordField = document.getElementById("password-confirm");
-        const toggleIcon = document.getElementById("toggleConfirmPassword");
-        if (confirmPasswordField.type === "password") {
-            confirmPasswordField.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-        } else {
-            confirmPasswordField.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-        }
-    }
-</script>
 @endsection

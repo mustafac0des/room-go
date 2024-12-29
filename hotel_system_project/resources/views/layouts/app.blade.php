@@ -79,7 +79,7 @@
                         </ul>
                     </div>
                     @endauth
-                    <main class="w-100 h-full my-5 shadow-lg">
+                    <main class="w-100 py-4">
                         @yield('content')
                     </main>
                 </div>
