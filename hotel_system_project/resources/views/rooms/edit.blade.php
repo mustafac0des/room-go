@@ -1,122 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8 p-0">
-            <div class="card" style="border-color: #9a616d;">
-                <div class="card-header" style="color: #9a616d;">{{ __('Edit Room') }}</div>
-
-                <div class="card-body" style="background-color: #f4f1f3;">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert" style="background-color: #9a616d; color: white;">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('rooms.update', $room->id) }}">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Address Field -->
-                        <div class="form-group row mb-3">
-                            <label for="address" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Address') }}</label>
-                            <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $room->address) }}" autocomplete="address" style="border-color: #9a616d;">
+<div class="container p-0">
+    <div class="col col-xl-10 rounded-6 w-100">
+        <div class="card rounded-4" style="border-color: #9a616d;">
+            <div class="row g-0">
+                <div class="col-md-6 col-lg-5">
+                    <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                         alt="Room Image" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                    <div class="card-body p-4 p-lg-5 text-black">
+                        <h1 class="fw-bold mb-4">Edit Room</h1>
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert" style="background-color: #9a616d; color: white;">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('rooms.update', $room->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-outline mb-3">
+                                <input id="address" type="text" class="form-control form-control-md @error('address') is-invalid @enderror" name="address" value="{{ old('address', $room->address) }}" required autocomplete="address" style="border: 1px solid #9a616d; color: #9a616d;">
+                                <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="address">{{ __('Address') }}</label>
                                 @error('address')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Beds Field -->
-                        <div class="form-group row mb-3">
-                            <label for="beds" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Beds') }}</label>
-                            <div class="col-md-6">
-                                <input id="beds" type="number" class="form-control @error('beds') is-invalid @enderror" name="beds" value="{{ old('beds', $room->beds) }}" autocomplete="beds" style="border-color: #9a616d;">
+                            <div class="form-outline mb-3">
+                                <input id="beds" type="number" class="form-control form-control-md @error('beds') is-invalid @enderror" name="beds" value="{{ old('beds', $room->beds) }}" required autocomplete="beds" style="border: 1px solid #9a616d; color: #9a616d;">
+                                <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="beds">{{ __('Beds') }}</label>
                                 @error('beds')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Washrooms Field -->
-                        <div class="form-group row mb-3">
-                            <label for="washrooms" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Washrooms') }}</label>
-                            <div class="col-md-6">
-                                <input id="washrooms" type="number" class="form-control @error('washrooms') is-invalid @enderror" name="washrooms" value="{{ old('washrooms', $room->washrooms) }}" autocomplete="washrooms" style="border-color: #9a616d;">
+                            <div class="form-outline mb-3">
+                                <input id="washrooms" type="number" class="form-control form-control-md @error('washrooms') is-invalid @enderror" name="washrooms" value="{{ old('washrooms', $room->washrooms) }}" required autocomplete="washrooms" style="border: 1px solid #9a616d; color: #9a616d;">
+                                <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="washrooms">{{ __('Washrooms') }}</label>
                                 @error('washrooms')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Guests Field -->
-                        <div class="form-group row mb-3">
-                            <label for="guests" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Guests') }}</label>
-                            <div class="col-md-6">
-                                <input id="guests" type="number" class="form-control @error('guests') is-invalid @enderror" name="guests" value="{{ old('guests', $room->guests) }}" autocomplete="guests" style="border-color: #9a616d;">
+                            <div class="form-outline mb-3">
+                                <input id="guests" type="number" class="form-control form-control-md @error('guests') is-invalid @enderror" name="guests" value="{{ old('guests', $room->guests) }}" required autocomplete="guests" style="border: 1px solid #9a616d; color: #9a616d;">
+                                <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="guests">{{ __('Guests') }}</label>
                                 @error('guests')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Price Field -->
-                        <div class="form-group row mb-3">
-                            <label for="price" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Price') }}</label>
-                            <div class="col-md-6">
-                                <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', $room->price) }}" autocomplete="price" style="border-color: #9a616d;">
+                            <div class="form-outline mb-3">
+                                <input id="price" type="number" class="form-control form-control-md @error('price') is-invalid @enderror" name="price" value="{{ old('price', $room->price) }}" required autocomplete="price" style="border: 1px solid #9a616d; color: #9a616d;">
+                                <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="price">{{ __('Price') }}</label>
                                 @error('price')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Amenities Field (Checkboxes) -->
-                        <div class="form-group row mb-3">
-                            <label for="amenities" class="col-md-4 col-form-label text-md-right" style="color: #9a616d;">{{ __('Amenities') }}</label>
-                            <div class="col-md-6">
+                            <div class="form-outline mb-3">
                                 @php
                                     $amenities = old('amenities', json_decode($room->amenities, true)) ?? [];
                                     $available_amenities = ['Wi-Fi', 'Parking', 'Pool', 'Gym', 'Breakfast', 'Air Conditioning'];
                                 @endphp
-                                
-                                @foreach ($available_amenities as $amenity)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity }}" 
-                                        {{ in_array($amenity, $amenities) ? 'checked' : '' }} style="border-color: #9a616d;">
-                                        <label class="form-check-label" for="{{ $amenity }}" style="color: #9a616d;">{{ $amenity }}</label>
-                                    </div>
-                                @endforeach
-
+                                <div class="d-flex flex-column">
+                                    @foreach ($available_amenities as $amenity)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity }}" {{ in_array($amenity, $amenities) ? 'checked' : '' }} style="border: 1px solid #9a616d;">
+                                            <label class="form-check-label" style="color: #9a616d;">{{ $amenity }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
                                 @error('amenities')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn" style="background-color: #9a616d; color: white;">
-                                    {{ __('Update Room') }}
-                                </button>
+                            <div class="pt-1 mb-4">
+                                <button type="submit" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9a616d;">Update Room</button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
