@@ -13,12 +13,11 @@
 <body class="m-3" style="background-color: #9A616D;">
     <div id="app" class="w-100">
         <div class="d-flex">
-            
             <div class="col-md-10 main-content mx-auto">
-                <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm rounded-4">
+                <nav class="navbar navbar-expand-md bg-light shadow-lg rounded-4">
                     <div class="container">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            {{ config('app.name', 'Laravel') }}
+                            Room<i style="color: #9A616D;">GO</i>
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
@@ -80,7 +79,7 @@
                         </ul>
                     </div>
                     @endauth
-                    <main class="w-100 py-4">
+                    <main class="w-100 h-full my-5 shadow-lg">
                         @yield('content')
                     </main>
                 </div>
