@@ -26,7 +26,6 @@ class RoomController extends Controller
         // Get the rooms hosted by the logged-in user along with their bookings
         $rooms = Room::with(['bookings' => function($query) {
             // Only retrieve bookings that are "pending"
-            $query->where('status', 'pending');
         }])->where('host_id', auth()->id())->get();
 
         return view('home', compact('rooms'));
