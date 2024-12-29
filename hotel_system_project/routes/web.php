@@ -18,6 +18,7 @@ Route::put('/profile', [ProfileController::class, 'update'])->name('profile.upda
 
 use App\Http\Controllers\RoomController;
 
+Route::get('/', [RoomController::class, 'bookings'])->name('home')->middleware('auth');
 Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store')->middleware('auth');
 Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create')->middleware('auth');
 Route::get('/rooms/manage', [RoomController::class, 'index'])->name('rooms.index')->middleware('auth');
@@ -26,6 +27,7 @@ Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update
 Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.delete')->middleware('auth');
 Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('rooms.view')->middleware('auth');
 Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('rooms.book')->middleware('auth');
-
+Route::get('/rooms/order/{id}', [RoomController::class, 'order'])->name('rooms.order')->middleware('auth');
+Route::put('/bookings/{id}/status', [RoomController::class, 'updateBookingStatus'])->name('rooms.updateBookingStatus')->middleware('auth');
 
 

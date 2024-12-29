@@ -21,6 +21,38 @@ class RoomController extends Controller
         return view('rooms.create');
     }
 
+    public function bookings()
+    {
+        // Get the rooms hosted by the logged-in user along with their bookings
+        $rooms = Room::with(['bookings' => function($query) {
+            // Only retrieve bookings that are "pending"
+            $query->where('status', 'pending');
+        }])->where('host_id', auth()->id())->get();
+
+        return view('home', compact('rooms'));
+    }
+
+    public function updateBookingStatus(Request $request, $bookingId)
+{
+    $booking = Booking::findOrFail($bookingId);
+
+    // Ensure the status is valid
+    $validStatuses = ['approved', 'rejected'];
+    if (!in_array($request->status, $validStatuses)) {
+        return back()->with('error', 'Invalid status.');
+    }
+
+    // Update the booking status
+    $booking->status = $request->status;
+    $booking->save();
+
+    // Return back with a success message
+    return back()->with('status', 'Booking status updated successfully.');
+}
+
+
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -133,6 +165,16 @@ class RoomController extends Controller
         return view('rooms.view', compact('rooms'));
     }
 
+    public function order($id)
+    {
+        $room = Room::findOrFail($id);
+
+        if ($room->host_id == auth()->id()) {
+            return redirect()->route('rooms.view')->with('error', 'You cannot book your own room.');
+        }
+
+        return view('rooms.order', compact('room'));
+    }
     public function book(Request $request, $roomId)
     {
         $room = Room::findOrFail($roomId);
@@ -163,6 +205,6 @@ class RoomController extends Controller
             'guest_picture' => $user->picture,
         ]);
 
-        return redirect()->route('rooms.view')->with('status', 'Your booking is now pending.');
+        return redirect('/')->with('status', 'Your booking is now pending.');
     }
 }

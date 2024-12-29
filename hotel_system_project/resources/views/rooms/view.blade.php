@@ -35,7 +35,7 @@
                                         @endforeach
                                     </ul>
 
-                                    <a href="{{ route('rooms.book', $room->id) }}" class="btn" style="background-color: #9a616d; color: white;">Book Now</a>
+                                    <a href="{{ route('rooms.order', $room->id) }}" class="btn" style="background-color: #9a616d; color: white;">Book Now</a>
                                 </div>
                             </div>
                         </div>
