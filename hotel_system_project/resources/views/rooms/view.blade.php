@@ -5,20 +5,16 @@
     <div class="card rounded-4">
         <div class="row g-0">
             <div class="col-md-4">
-                @foreach($rooms as $room)
-                    @if($room->image_path) 
-                        <img src="{{ asset('storage/' . $room->image_path) }}" class="rounded-4 shadow-lg" alt="Room Image" style="width: 100%; height: 100%; object-fit: cover;" />
-                    @else
-                        <img src="https://images.unsplash.com/photo-1517820982827-59baae796dee?q=80&w=1992&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-4 shadow-lg" alt="Room Image" style="width: 100%; height: 100%; object-fit: cover;" />
-                    @endif
-                @endforeach
+                
+                        <img src="https://images.unsplash.com/photo-1532101780307-8f873ece858f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-4 shadow-lg" alt="Room Image" style="width: 100%; height: 100%; object-fit: cover;" />
+                    
             </div>
             <div class="col-md-8">
                 <div class="card-body p-0">
                     <div class="card-header" style="color: #9A616D;">{{ __('Available Rooms for Booking') }}</div>
 
                     @if($rooms->isEmpty())
-                        <div class="alert alert-info">No rooms available for booking at the moment.</div>
+                        <div class="m-2 alert alert-info">No rooms available for booking at the moment.</div>
                     @else
                         <div class="row">
                             @foreach($rooms as $room)

@@ -11,12 +11,42 @@
                     </div>
                     <div class="col-md-8 d-flex">
                         <div class="card-body p-0">
-                            <div class="card-header" style="color: #9A616D;">{{ __('Notifications') }}</div>
+                            <div class="card-header fs-3" style="color: #9A616D;">{{ __('Notifications') }}</div>
                             @if (session('status'))
                                 <div class="alert alert-success m-2" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
+                            
+                            <div class="card-header" style="color: #9A616D;">{{ __('Your Reservations') }}</div>
+                            @if ($reservations->isEmpty())
+                                <p class="m-2 text-center badge bg-danger text-light">No reservations found!</p>
+                            @else
+                                <div class="card-body">
+                                    @foreach ($reservations as $reservation)
+                                        <div class="d-flex align-items-center">
+                                            
+                                            
+                                        </div>
+                                        <ul class="d-flex gap-2">
+                                            <div>
+                                                <img src="{{ asset('storage/' . $reservation->room->image) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
+                                            </div>
+                                            <div>
+                                                <i style="color: #9A616D;">{{ $reservation->room->address }}</i>
+                                                <i>ID#{{ $reservation->room->id }}</i>
+                                                <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($reservation->start_date)->format('d M Y') }} to 
+                                                {{ \Carbon\Carbon::parse($reservation->end_date)->format('d M Y') }}</span>
+                                                <span class="badge bg-warning text-dark">${{ $reservation->price }}</span>
+                                                <span class="badge bg-info text-dark">{{ $reservation->status }}</span>
+                                                <br>
+                                            </div>
+                                        </ul>
+                                    @endforeach
+                                </div>
+                            @endif
+                                <div class="card-header" style="color: #9A616D;">{{ __('Your Rooms') }}</div>
+                            <div class="card-body">
 
                             @foreach ($rooms as $room)
                                 <div class="d-flex align-items-center">
@@ -30,6 +60,7 @@
                                     @foreach ($room->bookings as $booking)
                                         @if ($booking->status == 'occupied')
                                             <div>
+                                                <img src="{{ asset('storage/' . $room->image) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
                                                 <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
                                                 <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
                                                 {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
@@ -44,6 +75,7 @@
                                             </div>
                                         @elseif ($booking->status == 'pending')
                                             <div>
+                                                <img src="{{ asset('storage/' . $room->image) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
                                                 <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
                                                 <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
                                                 {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
@@ -59,6 +91,8 @@
                                                     </div>
                                                 </form>
                                             </div>
+                                        @elseif ($booking->status == 'rejected')
+                                            @continue
                                         @else
                                             <p class="px-3" style="color: #9A616D;">No pending bookings for this room.</p>
                                         @endif

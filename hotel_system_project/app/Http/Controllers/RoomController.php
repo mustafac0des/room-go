@@ -26,7 +26,10 @@ class RoomController extends Controller
         $rooms = Room::with(['bookings' => function($query) {
         }])->where('host_id', auth()->id())->get();
 
-        return view('home', compact('rooms'));
+        $reservations = Booking::with(['room' => function($query) {
+        }])->where('guest_id', auth()->id())->get();
+
+        return view('home', compact('rooms', 'reservations'));
     }
 
     public function updateBookingStatus(Request $request, $bookingId)
@@ -185,13 +188,25 @@ class RoomController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'guests' => 'required|integer|min:1',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $user = Auth::user();
 
+        $picturePath = null;
+        if ($request->hasFile('picture')) {
+            $picturePath = $request->file('picture')->store('user_pictures', 'public');
+        }
+
         $startDate = new \Carbon\Carbon($request->start_date);
         $endDate = new \Carbon\Carbon($request->end_date);
-        $totalDays = $endDate->diffInDays($startDate);
+
+        $totalDays = -1*($endDate->diffInDays($startDate));
+
+        if ($totalDays <= 0) {
+            return back()->withErrors(['end_date' => 'The end date must be after the start date.']);
+        }
+
         $price = $totalDays * $room->price * $request->guests;
 
         Booking::create([
@@ -204,7 +219,7 @@ class RoomController extends Controller
             'guest_name' => $user->name,
             'guest_email' => $user->email,
             'guest_phone' => $user->phone,
-            'guest_picture' => $user->picture,
+            'guest_picture' => $picturePath,
         ]);
 
         return redirect('/')->with('status', 'Your booking is now pending.');
