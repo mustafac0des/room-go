@@ -23,33 +23,38 @@ class RoomController extends Controller
 
     public function bookings()
     {
-        // Get the rooms hosted by the logged-in user along with their bookings
         $rooms = Room::with(['bookings' => function($query) {
-            // Only retrieve bookings that are "pending"
         }])->where('host_id', auth()->id())->get();
 
         return view('home', compact('rooms'));
     }
 
     public function updateBookingStatus(Request $request, $bookingId)
-{
-    $booking = Booking::findOrFail($bookingId);
+    {
+        $booking = Booking::findOrFail($bookingId);
 
-    // Ensure the status is valid
-    $validStatuses = ['rejected', 'pending', 'occupied', 'completed'];
-    if (!in_array($request->status, $validStatuses)) {
-        return back()->with('error', 'Invalid status.');
+        $validStatuses = ['rejected', 'pending', 'occupied', 'completed'];
+        if (!in_array($request->status, $validStatuses)) {
+            return back()->with('error', 'Invalid status.');
+        }
+
+        if ($request->status == 'occupied') {
+            $pendingBookings = Booking::where('room_id', $booking->room_id)
+                                    ->where('status', 'pending')
+                                    ->where('id', '!=', $bookingId)
+                                    ->get();
+
+            foreach ($pendingBookings as $pendingBooking) {
+                $pendingBooking->status = 'rejected';
+                $pendingBooking->save();
+            }
+        }
+
+        $booking->status = $request->status;
+        $booking->save();
+
+        return back()->with('status', 'Booking status updated successfully.');
     }
-
-    // Update the booking status
-    $booking->status = $request->status;
-    $booking->save();
-
-    // Return back with a success message
-    return back()->with('status', 'Booking status updated successfully.');
-}
-
-
 
 
     public function store(Request $request)
@@ -108,7 +113,7 @@ class RoomController extends Controller
             'guests' => 'required|integer|min:1',
             'price' => 'required|numeric|min:1',
             'amenities' => 'nullable|array',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $room = Room::findOrFail($id);
@@ -118,14 +123,9 @@ class RoomController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $path = $request->image->storeAs('images', $imageName, 'public');
-
-            if ($room->image) {
-                Storage::disk('public')->delete('images/' . $room->image);
-            }
-
-            $room->image = $path;
+            $image = $request->file('image');
+            $imageData = file_get_contents($image->getRealPath());
+            $data['image'] = $imageData; 
         }
 
         $room->update([
@@ -135,10 +135,12 @@ class RoomController extends Controller
             'guests' => $request->guests,
             'price' => $request->price,
             'amenities' => json_encode($request->amenities),
+            'image' => $data['image'] ?? $room->image,
         ]);
 
         return redirect()->route('rooms.index')->with('status', 'Room updated successfully!');
     }
+
 
     public function destroy($id)
     {
@@ -147,7 +149,7 @@ class RoomController extends Controller
         $hasNonOccupiedBookings = $room->bookings->where('status', '!=', 'occupied')->isNotEmpty();
 
         if ($hasNonOccupiedBookings) {
-            return redirect()->route('rooms.manage')->with('error', 'Room cannot be deleted because it has non-occupied bookings.');
+            return redirect()->route('rooms.manage')->with('error', 'Room cannot be deleted because it is occupied!');
         }
 
         $room->delete();
@@ -174,6 +176,7 @@ class RoomController extends Controller
 
         return view('rooms.order', compact('room'));
     }
+
     public function book(Request $request, $roomId)
     {
         $room = Room::findOrFail($roomId);

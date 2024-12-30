@@ -6,7 +6,7 @@
             <div class="card rounded-4">
                 <div class="row g-0">
                     <div class="col-md-6 col-lg-5">
-                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                        <img src="https://images.unsplash.com/photo-1547961547-321889bff29e?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="signup form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
                     </div>
                     <div class="col-md-6 col-lg-7 d-flex align-items-center">

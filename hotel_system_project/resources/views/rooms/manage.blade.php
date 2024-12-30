@@ -5,21 +5,20 @@
             <div class="card rounded-4">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                        <img src="https://images.unsplash.com/photo-1517820982827-59baae796dee?q=80&w=1992&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="signup form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
                     </div>
                     <div class="col-md-8 d-flex">
                         <div class="card-body p-0">
-                            @if ($rooms->isEmpty())
-                            <p class="text-center text-muted">No rooms found.</p>
-                             @endif
                             <div class="card-header" style="color: #9A616D;">{{ __('Manage Your Rooms') }}</div>
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
-
+                             @if ($rooms->isEmpty())
+                                <p class="m-2 text-center badge bg-danger text-light">No rooms found!</p>
+                            @endif
                             @foreach ($rooms as $room)
                                 <div class="col-md-4 mb-4 m-3 shadow-lg rounded-4">
                                     <div class="card rounded-4">
@@ -27,12 +26,7 @@
                                             Room #{{ $room->id }}
                                         </div>
                                         <div class="card-body">
-                                            @if($room->image)
-                                                <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D" class="img-fluid mb-3" alt="Room Image">
-                                            @else
-                                                <img src="https://via.placeholder.com/500" class="img-fluid mb-3" alt="No image available">
-                                            @endif
-
+                                            <img src="{{ asset('storage/' . $room->image) }}" class="img-fluid mb-3 rounded-4 shadow-lg" alt="Room Image">
                                             <div class="fs-6" style="color: #9A616D;">
                                                 <p class="my-0"><strong>Address:</strong> <span class="badge bg-warning text-dark">{{ $room->address }}</span></p>
                                                 <p class="my-0"><strong>Beds:</strong> <span class="badge bg-success">{{ $room->beds }}</span></p>

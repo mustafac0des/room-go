@@ -15,7 +15,6 @@ class ProfileController extends Controller
 {
     public function update(Request $request)
     {
-        
         $data = $request->validate([
             'name' => 'required|string',
             'phone' => 'nullable|string',
@@ -23,11 +22,17 @@ class ProfileController extends Controller
             'gender' => 'nullable|string',
             'picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
-        
+
         $user = Auth::user();
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('picture')) {
+            $image = $request->file('picture');
+            $imageData = file_get_contents($image->getRealPath());
+            $data['picture'] = $imageData; 
         }
 
         $user->update($data);

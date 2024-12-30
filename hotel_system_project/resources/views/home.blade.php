@@ -6,7 +6,7 @@
             <div class="card rounded-4">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                        <img src="https://images.unsplash.com/photo-1587573088697-b4fa10460683?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="signup form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
                     </div>
                     <div class="col-md-8 d-flex">
@@ -21,13 +21,11 @@
                             @foreach ($rooms as $room)
                                 <div class="d-flex align-items-center">
                                     <div style="margin-left: 20px;">
-                                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
-                                            alt="signup form" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
+                                        <img src="{{ asset('storage/' . $room->image) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
                                     </div>
                                     <i class="fs-1 m-2" style="color: #9A616D;">{{ $room->address }}</i>
                                     <i>ID#{{$room->id}}</i>
                                 </div>
-
                                 <ul>
                                     @foreach ($room->bookings as $booking)
                                         @if ($booking->status == 'occupied')

@@ -6,7 +6,7 @@
             <div class="card rounded-4">
                 <div class="row g-0">
                     <div class="col-md-6 col-lg-5">
-                        <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+                        <img src="https://images.unsplash.com/photo-1532490389938-2856e3f1560a?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="Profile Management" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
                     </div>
                     <div class="col-md-6 col-lg-7 d-flex align-items-center">
@@ -22,6 +22,15 @@
                                     <input type="text" id="name" class="form-control form-control-md @error('name') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="name" value="{{ old('name', auth()->user()->name) }}" required autocomplete="name" />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="name">Name</label>
                                     @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-outline mb-1">
+                                    <input type="file" id="picture" class="form-control form-control-md @error('picture') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="picture" value="{{ old('picture', auth()->user()->picture) }}" accept="image/*" />
+                                    <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="picture">Picture</label>
+                                    @error('picture')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

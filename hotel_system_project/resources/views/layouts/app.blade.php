@@ -38,11 +38,11 @@
                                         </li>
                                     @endif
                                 @else
-                                    <li class="nav-item dropdown">
+                                    <li class="nav-item dropdown d-flex align-items-center gap-1">
+                                        <img class="rounded-circle" style="width: 30px;" src="data:image/jpeg;base64,{{ base64_encode(string: Auth::user()->picture) }}" alt="">
                                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                             {{ Auth::user()->name }}
                                         </a>
-
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="{{ route('logout') }}"
                                                onclick="event.preventDefault();
@@ -65,16 +65,16 @@
                     <div class="sidebar text-dark fs-5 col-md-2 p-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/profile/manage') }}">Manage Profile</a>
+                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/profile/manage') }}">Manage Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/create') }}">Host A Room</a>
+                                <a class="nav-link shadow-lg bg-light border-warning border rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/create') }}">Host A Room</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
+                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link bg-light text-dark border rounded-4 m-1" href="{{ url('/rooms/view') }}">Book A Room</a>
+                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/view') }}">Book A Room</a>
                             </li>
                         </ul>
                     </div>
