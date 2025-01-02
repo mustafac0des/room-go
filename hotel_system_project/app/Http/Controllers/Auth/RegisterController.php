@@ -30,11 +30,14 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'role' => ['nullable', 'in:user,admin'],
         ]);
     }
 
     protected function create(array $data)
     {
+        $role = isset($data['role']) && !is_null($data['role']) ? $data['role'] : 'user';
+
         $pictureData = null;
         if (isset($data['picture'])) {
             $image = $data['picture'];
@@ -49,6 +52,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'picture' => $pictureData,
+            'role' => $role,
         ]);
 
         session()->flash('user', $user);

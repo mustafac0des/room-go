@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@if (auth()->check() && auth()->user()->role === 'admin')
+    <script type="text/javascript">
+        alert("Redirecting to Admin Portal")
+        window.location.href = "{{ url('admin/dashboard') }}";
+    </script>
+@endif
+
 @section('content')
     <div class="container p-0">
         <div class="col col-xl-10 rounded-6">

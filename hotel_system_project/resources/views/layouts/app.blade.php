@@ -9,6 +9,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <!-- Add these in the <head> section of your layout or blade file -->
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body class="m-3" style="background-color: #9A616D;">
     <div id="app" class="w-100">
@@ -62,22 +68,35 @@
                 </nav>
                 <div class="d-flex">
                     @auth
-                    <div class="sidebar text-dark fs-5 col-md-2 p-3">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/profile/manage') }}">Manage Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link shadow-lg bg-light border-warning border rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/create') }}">Host A Room</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/view') }}">Book A Room</a>
-                            </li>
-                        </ul>
-                    </div>
+                        <div class="sidebar text-dark fs-5 col-md-2 p-3">
+                            <ul class="nav flex-column">
+                                @if(Auth::user()->role == 'user')
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/profile/manage') }}">Manage Profile</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border-warning border rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/create') }}">Host A Room</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/manage') }}">Manage Rooms</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/view') }}">Book A Room</a>
+                                    </li>
+                                @endif
+                                @if(Auth::user()->role == 'admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/admin/users') }}">Manage Users</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/admin/rooms') }}">Manage Rooms</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/admin/bookings') }}">Manage Bookings</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
                     @endauth
                     <main class="w-100 py-4">
                         @yield('content')
@@ -86,5 +105,6 @@
                 </div>
         </div>
     </div>
+    
 </body>
 </html>
