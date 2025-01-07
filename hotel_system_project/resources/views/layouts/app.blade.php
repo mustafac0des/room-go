@@ -3,18 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <!-- Add these in the <head> section of your layout or blade file -->
-<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 </head>
 <body class="m-3" style="background-color: #9A616D;">
     <div id="app" class="w-100">
@@ -28,7 +24,6 @@
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto">
                                 @guest
@@ -45,7 +40,7 @@
                                     @endif
                                 @else
                                     <li class="nav-item dropdown d-flex align-items-center gap-1">
-                                        <img class="rounded-circle" style="width: 30px;" src="data:image/jpeg;base64,{{ base64_encode(string: Auth::user()->picture) }}" alt="">
+                                        <img class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;" src="data:image/jpeg;base64,{{ base64_encode(string: Auth::user()->picture) }}" alt="">
                                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                             {{ Auth::user()->name }}
                                         </a>
@@ -55,7 +50,6 @@
                                                          document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
                                             </a>
-
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                 @csrf
                                             </form>
@@ -102,9 +96,8 @@
                         @yield('content')
                     </main>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
-    
 </body>
 </html>

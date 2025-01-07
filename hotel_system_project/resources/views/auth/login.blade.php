@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container p-0">
         <div class="col col-xl-10 rounded-6 w-100">
@@ -46,5 +45,3 @@
         </div>
     </div>
 @endsection
-
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

@@ -14,7 +14,6 @@
                             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-
                                 <div class="d-flex align-items-center pb-0 mb-3">
                                     <span class="h1 fw-bold mb-0">Manage Your Profile</span>
                                 </div>

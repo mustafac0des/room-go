@@ -24,17 +24,12 @@
                                     {{ session('status') }}
                                 </div>
                             @endif
-                            
                             <div class="card-header" style="color: #9A616D;">{{ __('Your Reservations') }}</div>
                             @if ($reservations->isEmpty())
                                 <p class="m-2 text-center badge bg-danger text-light">No reservations found!</p>
                             @else
                                 <div class="card-body">
                                     @foreach ($reservations as $reservation)
-                                        <div class="d-flex align-items-center">
-                                            
-                                            
-                                        </div>
                                         <ul class="d-flex gap-2">
                                             <div>
                                                 <img src="{{ asset('storage/' . $reservation->room->image) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
@@ -112,9 +107,7 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
     <script type="text/javascript">
         @if(session('user'))
             (function() {
@@ -123,7 +116,15 @@
                 emailjs.send('service_op8vezj', 'template_dwjf2oi', {
                     to_email: '{{ session('user')->email }}',
                     to_name: '{{ session('user')->name }}',
-                    message: 'Your account has been successfully created.'
+                    message: 'An account has been created by the email {{ auth()->user()->email }}.'
+                });
+            })();
+            (function() {
+                emailjs.init('c61rEPe79cRAtAYXW');
+
+                emailjs.send('service_op8vezj', 'template_dwjf2oi', {
+                    to_email: '{{ auth()->user()->email }}'
+                    message: 'You have successfully created your account!',
                 });
             })();
         @endif

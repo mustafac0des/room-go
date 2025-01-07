@@ -1,12 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomsController;
 
 Auth::routes();
+
+Route::get('/landing', function () {
+    return view('landing');
+});
+
 
 Route::get('/', function () {
     return view('home');
@@ -16,24 +22,19 @@ Route::get('/profile/manage', function () {
     return view('profile.manage', ['user' => Auth::user()]);
 })->middleware('auth');
 
-Route::get('/admin/dashboard', function () {
-    if (Auth::user()->role !== 'admin') {
-        return redirect('/')->with('error', 'You are not authorized to access the admin dashboard');
-    }
-    return view('admin.dashboard');
-})->middleware('auth');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 
 Route::get('/', [RoomController::class, 'bookings'])->name('home')->middleware('auth');
-Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store')->middleware('auth');
-Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create')->middleware('auth');
-Route::get('/rooms/manage', [RoomController::class, 'index'])->name('rooms.index')->middleware('auth');
-Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('rooms.edit')->middleware('auth');
-Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update')->middleware('auth');
-Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.delete')->middleware('auth');
-Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('rooms.view')->middleware('auth');
-Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('rooms.book')->middleware('auth');
-Route::get('/rooms/order/{id}', [RoomController::class, 'order'])->name('rooms.order')->middleware('auth');
-Route::put('/bookings/{id}/status', [RoomController::class, 'updateBookingStatus'])->name('rooms.updateBookingStatus')->middleware('auth');
+Route::post('/rooms', [RoomController::class, 'store'])->name('room.store')->middleware('auth');
+Route::get('/rooms/create', [RoomController::class, 'create'])->name('room.create')->middleware('auth');
+Route::get('/rooms/manage', [RoomController::class, 'index'])->name('room.index')->middleware('auth');
+Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('room.edit')->middleware('auth');
+Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('room.update')->middleware('auth');
+Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('room.delete')->middleware('auth');
+Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('room.view')->middleware('auth');
+Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('room.book')->middleware('auth');
+Route::get('/rooms/order/{id}', [RoomController::class, 'order'])->name('room.order')->middleware('auth');
+Route::put('/bookings/{id}/status', [RoomController::class, 'updateBookingStatus'])->name('room.updateBookingStatus')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('admin/users', [UsersController::class, 'index'])->name('users.index');
@@ -45,7 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('admin/users/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
 });
 
-use App\Http\Controllers\RoomsController;
 
 Route::middleware('auth')->group(function () {
     Route::get('admin/rooms', [RoomsController::class, 'index'])->name('rooms.index');
