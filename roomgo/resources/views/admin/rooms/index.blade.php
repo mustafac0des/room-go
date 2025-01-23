@@ -10,11 +10,7 @@
             <div class="col col-xl-10 rounded-6">
                 <div class="card rounded-4">
                     <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://images.unsplash.com/photo-1618044619888-009e412ff12a?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                 alt="signup form" class="rounded-4 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;" />
-                        </div>
-                        <div class="col-md-8 d-flex" style="overflow-x: scroll;">
+                        <div class="d-flex" style="overflow-x: scroll;">
                             <div class="card-body p-0">
                                 <div class="card-header fs-3" style="color: #9A616D;">{{ __('ROOMS MANAGEMENT') }}</div>
                                 @if (session('status'))
@@ -34,7 +30,6 @@
                                                     <th>Guests</th>
                                                     <th>Price</th>
                                                     <th>Amenities</th>
-                                                    <th>Image</th>
                                                     <th>Created At</th>
                                                     <th>Updated At</th>
                                                     <th>Action</th>
@@ -84,15 +79,6 @@
                     { data: 'guests', name: 'guests' },
                     { data: 'price', name: 'price' },
                     { data: 'amenities', name: 'amenities' },
-                    {
-                        data: 'image', name: 'image', render: function(data) {
-                            if (data) {
-                                return '<img src="data:image/jpeg;base64,' + data + '" alt="Room Image" style="width: 50px; height: 50px; object-fit: cover;" class="rounded-circle">';
-                            } else {
-                                return '<span>No Image</span>';
-                            }
-                        }
-                    },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }

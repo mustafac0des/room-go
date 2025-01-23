@@ -77,6 +77,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/rooms/view') }}">Book A Room</a>
                                     </li>
+                                    <li class="nav-item" onclick="window.location='{{ route('chat.index') }}'">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;">Go to ChatGPT</a>
+                                    </li>
                                 @endif
                                 @if(Auth::user()->role == 'admin')
                                     <li class="nav-item">
@@ -85,8 +88,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/admin/rooms') }}">Manage Rooms</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;" href="{{ url('/admin/bookings') }}">Manage Bookings</a>
+                                    </li>
+                                    <li class="nav-item" onclick="window.location='{{ route('chat.index') }}'">
+                                        <a class="nav-link shadow-lg bg-light border border-warning rounded-4 m-1" style="color: #9A616D;">Go to ChatGPT</a>
                                     </li>
                                 @endif
                             </ul>

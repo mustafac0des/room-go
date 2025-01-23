@@ -18,8 +18,6 @@
                                 <div class="d-flex align-items-center pb-0 mb-3">
                                     <span class="h1 fw-bold mb-0">Edit User Profile</span>
                                 </div>
-
-                                <!-- Name Field -->
                                 <div class="form-outline mb-1">
                                     <input type="text" id="name" class="form-control form-control-md @error('name') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="name">Name</label>
@@ -29,8 +27,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Email Field -->
                                 <div class="form-outline mb-1">
                                     <input type="email" id="email" class="form-control form-control-md @error('email') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="email" value="{{ old('email', $user->email) }}" required />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="email">Email</label>
@@ -40,8 +36,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Address Field -->
                                 <div class="form-outline mb-1">
                                     <input type="text" id="address" class="form-control form-control-md @error('address') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="address" value="{{ old('address', $user->address) }}" required />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="address">Address</label>
@@ -51,8 +45,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Phone Field -->
                                 <div class="form-outline mb-1">
                                     <input type="text" id="phone" class="form-control form-control-md @error('phone') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="phone" value="{{ old('phone', $user->phone) }}" required />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="phone">Phone</label>
@@ -62,8 +54,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Gender Field -->
                                 <div class="form-outline mb-1">
                                     <select id="gender" class="form-control form-control-md @error('gender') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="gender" required>
                                         <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>Male</option>
@@ -76,8 +66,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Role Field -->
                                 <div class="form-outline mb-1">
                                     <select id="role" class="form-control form-control-md @error('role') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="role" required>
                                         <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User</option>
@@ -90,8 +78,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Profile Picture Field -->
                                 <div class="form-outline mb-1">
                                     <input type="file" id="picture" class="form-control form-control-md @error('picture') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="picture" accept="image/*" />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="picture">Profile Picture</label>
@@ -101,8 +87,6 @@
                                         </span>
                                     @enderror
                                 </div>
-
-                                <!-- Password and Confirm Password Fields -->
                                 <div class="form-outline mb-1">
                                     <input type="password" id="password" class="form-control form-control-md @error('password') is-invalid @enderror" style="color: #9A616D; border: 1px solid #9A616D;" name="password" />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="password">Password</label>
@@ -112,16 +96,13 @@
                                         </span>
                                     @enderror
                                 </div>
-
                                 <div class="form-outline mb-1">
                                     <input type="password" id="password-confirm" class="form-control form-control-md" style="color: #9A616D; border: 1px solid #9A616D;" name="password_confirmation" />
                                     <label class="form-label mt-2 mx-2" style="color: #9A616D;" for="password-confirm">Confirm Password</label>
                                 </div>
-
                                 <div class="pt-1 mb-4">
                                     <button type="submit" class="btn text-light btn-lg rounded-4 shadow-sm" style="background-color: #9A616D;">Update User</button>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>

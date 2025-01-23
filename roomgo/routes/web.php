@@ -25,16 +25,16 @@ Route::get('/profile/manage', function () {
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 
 Route::get('/', [RoomController::class, 'bookings'])->name('home')->middleware('auth');
-Route::post('/rooms', [RoomController::class, 'store'])->name('room.store')->middleware('auth');
-Route::get('/rooms/create', [RoomController::class, 'create'])->name('room.create')->middleware('auth');
-Route::get('/rooms/manage', [RoomController::class, 'index'])->name('room.index')->middleware('auth');
-Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('room.edit')->middleware('auth');
-Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('room.update')->middleware('auth');
-Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('room.delete')->middleware('auth');
-Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('room.view')->middleware('auth');
-Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('room.book')->middleware('auth');
-Route::get('/rooms/order/{id}', [RoomController::class, 'order'])->name('room.order')->middleware('auth');
-Route::put('/bookings/{id}/status', [RoomController::class, 'updateBookingStatus'])->name('room.updateBookingStatus')->middleware('auth');
+Route::post('/rooms', [RoomController::class, 'stores'])->name('rooms.stores')->middleware('auth');
+Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create')->middleware('auth');
+Route::get('/rooms/manage', [RoomController::class, 'index'])->name('rooms.index')->middleware('auth');
+Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('rooms.edit')->middleware('auth');
+Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update')->middleware('auth');
+Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.delete')->middleware('auth');
+Route::get('/rooms/view', [RoomController::class, 'availableRooms'])->name('rooms.view')->middleware('auth');
+Route::post('/rooms/book/{id}', [RoomController::class, 'book'])->name('rooms.book')->middleware('auth');
+Route::get('/rooms/order/{id}', [RoomController::class, 'order'])->name('rooms.order')->middleware('auth');
+Route::put('/bookings/{id}/status', [RoomController::class, 'updateBookingStatus'])->name('rooms.updateBookingStatus')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('admin/users', [UsersController::class, 'index'])->name('users.index');
@@ -57,3 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/rooms/data', [RoomsController::class, 'getRooms'])->name('rooms.data');
 });
 
+use App\Http\Controllers\ChatController;
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat', [ChatController::class, 'chat'])->name('chat');

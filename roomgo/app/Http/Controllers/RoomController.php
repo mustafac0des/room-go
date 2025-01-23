@@ -59,13 +59,14 @@ class RoomController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function stores(Request $request)
     {
         $validated = $request->validate([
             'beds' => 'required|integer',
             'washrooms' => 'required|integer',
             'guests' => 'required|integer',
             'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'price' => 'required|numeric',
             'amenities' => 'nullable|array',
             'amenities.*' => 'nullable|string',
@@ -87,6 +88,7 @@ class RoomController extends Controller
             'washrooms' => $validated['washrooms'],
             'guests' => $validated['guests'],
             'address' => $validated['address'],
+            'city' => $validated['city'],
             'price' => $validated['price'],
             'amenities' => json_encode($validated['amenities'] ?? []),
             'image' => $path,
@@ -110,6 +112,7 @@ class RoomController extends Controller
     {
         $request->validate([
             'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'beds' => 'required|integer|min:1',
             'washrooms' => 'required|integer|min:1',
             'guests' => 'required|integer|min:1',
@@ -132,6 +135,7 @@ class RoomController extends Controller
 
         $room->update([
             'address' => $request->address,
+            'city' => $request->city,
             'beds' => $request->beds,
             'washrooms' => $request->washrooms,
             'guests' => $request->guests,

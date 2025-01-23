@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -22,18 +20,13 @@ class UsersController extends Controller
             $users = User::select('id', 'name', 'gender', 'address', 'phone', 'email', 'role', 'created_at', 'updated_at', 'picture')
                 ->get();
 
-            $users->each(function ($user) {
-                if ($user->picture) {
-                    $user->picture = base64_encode($user->picture);
-                }
-            });
-
-            Log::info('Users Data: ', $users->toArray());
-
             return DataTables::of($users)
                 ->addColumn('action', function($row) {
                     return '<a href="' . route('users.edit', $row->id) . '" class="btn btn-warning btn-sm m-1">Edit</a>
                             <a href="javascript:void(0)" onclick="deleteUser(' . $row->id . ')" class="btn btn-danger btn-sm m-1">Delete</a>';
+                })
+                ->editColumn('picture', function ($user) {
+                    return $user->picture ? '<img src="data:image/jpeg;base64,' . $user->picture . '" style="width: 50px; height: 50px; object-fit: cover;" />' : 'No Image';
                 })
                 ->make(true);
         }

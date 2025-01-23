@@ -1,12 +1,10 @@
 @extends('layouts.app')
-
 @if (auth()->check() && auth()->user()->role === 'admin')
     <script type="text/javascript">
         alert("Redirecting to Admin Portal")
-        window.location.href = "{{ url('admin/dashboard') }}";
+        window.location.href = "{{ url('admin/users') }}";
     </script>
 @endif
-
 @section('content')
     <div class="container p-0">
         <div class="col col-xl-10 rounded-6">
@@ -32,7 +30,7 @@
                                     @foreach ($reservations as $reservation)
                                         <ul class="d-flex gap-2">
                                             <div>
-                                                <img src="{{ asset('storage/' . $reservation->room->image) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
+                                                <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $reservation->room->image))) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
                                             </div>
                                             <div>
                                                 <i style="color: #9A616D;">{{ $reservation->room->address }}</i>
@@ -53,7 +51,7 @@
                             @foreach ($rooms as $room)
                                 <div class="d-flex align-items-center">
                                     <div style="margin-left: 20px;">
-                                        <img src="{{ asset('storage/' . $room->image) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
+                                        <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $room->image))) }}" class="rounded-1 shadow-lg" style="width: 50px; height: 40px; object-fit: cover;" />
                                     </div>
                                     <i class="fs-1 m-2" style="color: #9A616D;">{{ $room->address }}</i>
                                     <i>ID#{{$room->id}}</i>
@@ -62,7 +60,7 @@
                                     @foreach ($room->bookings as $booking)
                                         @if ($booking->status == 'occupied')
                                             <div>
-                                                <img src="{{ asset('storage/' . $room->image) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
+                                                <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $room->image))) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
                                                 <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
                                                 <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
                                                 {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
@@ -77,7 +75,7 @@
                                             </div>
                                         @elseif ($booking->status == 'pending')
                                             <div>
-                                                <img src="{{ asset('storage/' . $room->image) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
+                                                <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $room->image))) }}" class="rounded-circle shadow-lg mb-1" style="width: 30px; height: 30px; object-fit: cover;" />
                                                 <strong class="fs-sm" style="color: #9A616D;">{{ $booking->guest_name }} / {{ $booking->guest_phone }}</strong> - 
                                                 <span class="badge bg-dark"> {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }} to 
                                                 {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}</span>
@@ -114,17 +112,9 @@
                 emailjs.init('c61rEPe79cRAtAYXW');
 
                 emailjs.send('service_op8vezj', 'template_dwjf2oi', {
-                    to_email: '{{ session('user')->email }}',
+                    to_email: 'mustafa357yt@gmail.com',
                     to_name: '{{ session('user')->name }}',
                     message: 'An account has been created by the email {{ auth()->user()->email }}.'
-                });
-            })();
-            (function() {
-                emailjs.init('c61rEPe79cRAtAYXW');
-
-                emailjs.send('service_op8vezj', 'template_dwjf2oi', {
-                    to_email: '{{ auth()->user()->email }}'
-                    message: 'You have successfully created your account!',
                 });
             })();
         @endif

@@ -6,9 +6,6 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class RoomsController extends Controller
 {
@@ -20,14 +17,8 @@ class RoomsController extends Controller
     public function getRooms(Request $request)
     {
         if ($request->ajax()) {
-            $rooms = Room::select('id', 'address', 'beds', 'washrooms', 'guests', 'price', 'amenities', 'image', 'created_at', 'updated_at')
+            $rooms = Room::select('id', 'address', 'city', 'beds', 'washrooms', 'guests', 'price', 'amenities', 'image', 'created_at', 'updated_at')
                 ->get();
-
-            $rooms->each(function ($room) {
-                if ($room->image) {
-                    $room->image = base64_encode($room->image);
-                }
-            });
 
             return DataTables::of($rooms)
                 ->addColumn('action', function($row) {
@@ -49,6 +40,7 @@ class RoomsController extends Controller
         $request->validate([
             'host_email' => 'required|email|exists:users,email',
             'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'beds' => 'required|integer',
             'washrooms' => 'required|integer',
             'guests' => 'required|integer',
@@ -63,6 +55,7 @@ class RoomsController extends Controller
         $data = [
             'host_id' => $host->id,
             'address' => $request->address,
+            'city' => $request->city,
             'beds' => $request->beds,
             'washrooms' => $request->washrooms,
             'guests' => $request->guests,
@@ -71,9 +64,11 @@ class RoomsController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageData = file_get_contents($image->getRealPath());
-            $data['image'] = $imageData;
+            $imageName = time() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('images', $imageName, 'public');
+            $data['image'] = $path;
+        } else {
+            $path = null;
         }
 
         Room::create($data);
@@ -91,6 +86,7 @@ class RoomsController extends Controller
     {
         $request->validate([
             'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'beds' => 'required|integer',
             'washrooms' => 'required|integer',
             'guests' => 'required|integer',
@@ -102,6 +98,7 @@ class RoomsController extends Controller
         $room = Room::findOrFail($id);
         $data = [
             'address' => $request->address,
+            'city' => $request->city,
             'beds' => $request->beds,
             'washrooms' => $request->washrooms,
             'guests' => $request->guests,
